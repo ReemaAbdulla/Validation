@@ -1,7 +1,3 @@
-
-
-
-
 <?php
 include("includes/connection.php");
 
@@ -41,7 +37,7 @@ if (isset($_POST['submit']))
                             <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
 
 
-                                <div class="row form-group">
+                            <!--    <div class="row form-group">
                                     <div class="col col-md-3">
                                         <label for="n_id" class="form-control-label">National Number</label>
                                     </div>
@@ -171,14 +167,9 @@ if (isset($_POST['submit']))
                                     <input type="password" name="password" id="password"  placeholder="password" class="form-control">
                                     <small class="help-block form-text">Please enter your password</small>
                                 </div>
-                            </div>
+                            </div>-->
 
-                            <center> <button name="submit" type="submit" class="btn btn-sm btn-info " style="width:30%">Save
-
-
-
-
-                            </button>
+                            <center> <button name="submit" type="submit" class="btn btn-sm btn-info " style="width:30%"> Save </button>
                             <input name="reset" type="reset" class="btn btn-sm  btn-danger btn-info " style="width:30%"></center>
 
                            </div>
@@ -217,7 +208,7 @@ if (isset($_POST['submit']))
             </thead>
             <tbody>
                 <?php
-                $query="select * from citizen where c_id=$c_id";
+                $query="select * from citizen where c_id = {$_SESSION['c_id']}";
                 $result=mysqli_query($conn,$query);
                 while($row=mysqli_fetch_assoc($result))
                 {
@@ -234,8 +225,8 @@ if (isset($_POST['submit']))
                     echo "<td>{$row['mobile_number']}</td>";
                     echo "<td>{$row['gender']}</td>";
                     echo "<td>{$row['password']}</td>";
-                    echo "<td><a href='edit_citizen.php?id={$row['c_id']}'>Edit</a></td>";
-                    echo "<td><a href='delete_citizen.php?id={$row['c_id']}'>Delete</a></td>";
+                    echo "<td><a href='edit_citizen2.php?id={$row['c_id']}'>Edit</a></td>";
+                    echo "<td><a href='delete_citizen2.php?id={$row['c_id']}'>Delete</a></td>";
                     echo "</tr>";
 
                 }

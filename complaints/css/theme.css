@@ -807,10 +807,10 @@ section {
 }
 
 .au-input--xl {
-    min-width: 935px;
+    min-width: 500px;
 }
 
-@media (max-width: 1600px) {
+@media (max-width: 160px) {
     .au-input--xl {
         min-width: 350px;
     }

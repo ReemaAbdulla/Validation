@@ -3,6 +3,7 @@ session_start();
 if(!isset($_SESSION['c_id']))
 {
     header("location:login2.php");
+    
 }
 
 ?>
@@ -132,10 +133,22 @@ if(!isset($_SESSION['c_id']))
                     <div class="container-fluid">
                         <div class="header-wrap">
                             <form class="form-header" action="" method="POST">
-                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+                              <!--  <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
                                 <button class="au-btn--submit" type="submit">
                                     <i class="zmdi zmdi-search"></i>
-                                </button>
+                                </button>-->
+                                <label style="font-size:30px;font-family:serif;">
+                                    <?php $query="select * from citizen where c_id={$_SESSION['c_id']}";
+                                    $result=mysqli_query($conn,$query);
+                                    if ($row=mysqli_fetch_assoc($result))
+                                    {
+
+                                      echo  "wellcome "."{$row['first_name']}"." "."{$row['sec_name']}";
+
+                                  } 
+                                  ?>
+                                      
+                                  </label>
                             </form>
                             <div class="header-button">
                                 <div class="noti-wrap">
@@ -256,23 +269,35 @@ if(!isset($_SESSION['c_id']))
                                             <img src="images/icon/avatar-01.jpg" alt="John Doe" />
                                         </div>
                                         <div class="content">
-                                            <a class="js-acc-btn" href="#"></a>
+                                            <a class="js-acc-btn" href="#">
+
+                                    <?php $query="select * from citizen where c_id={$_SESSION['c_id']}";
+                                    $result=mysqli_query($conn,$query);
+                                    if ($row=mysqli_fetch_assoc($result))
+                                    {
+
+                                      echo  "{$row['first_name']}"." "."{$row['sec_name']}";
+
+                                  } 
+                                  ?>
+                                      
+                                  </a>
                                         </div>
                                         <div class="account-dropdown js-dropdown">
                                             <div class="info clearfix">
-                                                <div class="image">
+                                               <!-- <div class="image">
                                                     <a href="#">
                                                         <img src="images/icon/avatar-01.jpg" alt="John Doe" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
                                                     <h5 class="name">
-                                                        <a href="#"></a>
+                                                        <a href="#">john doe</a>
                                                     </h5>
                                                     <span class="email">johndoe@example.com</span>
                                                 </div>
-                                            </div>
-                                            <div class="account-dropdown__body">
+                                            </div>-->
+                                         <!--   <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
                                                     <a href="#">
                                                         <i class="zmdi zmdi-account"></i>Account</a>
@@ -285,9 +310,9 @@ if(!isset($_SESSION['c_id']))
                                                     <a href="#">
                                                         <i class="zmdi zmdi-money-box"></i>Billing</a>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <div class="account-dropdown__footer">
-                                                <a href="logout.php">
+                                                <a href="logout2.php">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>

@@ -2,6 +2,8 @@
 // connect to Data Base
 include("includes/connection.php");
 
+
+
 if (isset($_POST['submit']))
 {
     $case_day      =date("l");
@@ -14,13 +16,17 @@ if (isset($_POST['submit']))
     $case_entry    =$_POST['case_entry'];
     $case_desc     =$_POST['case_desc'];
     $case_emp_note =$_POST['case_emp_note'];
+    
+    $c_id          =$_SESSION['c_id'];
 
-    $query="insert into  cases(case_day,case_date,case_type,case_time,case_desc,directory_name,case_priority,case_status,case_emp_note,case_entry)
-                         values('$case_day','$case_date','$case_type','$case_time','$case_desc','$directory_name','$case_priority','$case_status','$case_emp_note','$case_entry')";
+    $query="insert into  cases(c_id,case_day,case_date,case_type,case_time,case_desc,directory_name,case_priority,case_status,case_emp_note,case_entry)
+        values('$c_id',$case_day','$case_date','$case_type','$case_time','$case_desc','$directory_name','$case_priority','$case_status','$case_emp_note','$case_entry')";
 
     mysqli_query($conn,$query);
-         
-   }
+
+
+    }
+
 ?>
 
 <?php include('includes/public_header.php'); ?>
@@ -167,6 +173,7 @@ if (isset($_POST['submit']))
                             </div>
                         </div>
                     </div>
+                    
 
                      <div class="col-md-12">
                                 <!-- DATA TABLE-->
@@ -193,10 +200,12 @@ if (isset($_POST['submit']))
                                         </thead>
                                         <tbody>
                                             <?php
-                                              $query="select * from cases";
+                                              $query="select * from cases ";
                                               $result=mysqli_query($conn,$query);
                                               while($row=mysqli_fetch_assoc($result))
                                               {
+                                                if($row['c_id'] == $_SESSION['c_id'])
+                                                {
                                                 echo "<tr>";
                                                 echo "<td>{$row['case_id']}</td>";
                                                 echo "<td>{$row['case_priority']}</td>";
@@ -212,7 +221,7 @@ if (isset($_POST['submit']))
                                                 echo "<td><a href='edit_cases2.php?id={$row['case_id']}'>Edit</a></td>";
                                                 echo "<td><a href='delete_cases2.php?id={$row['case_id']}'>Delete</a></td>";
                                                 echo "</tr>";
-
+                                                }
 
                                               }
                                             ?>

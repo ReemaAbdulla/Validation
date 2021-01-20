@@ -15,6 +15,8 @@ if(isset($_POST['submit']))
     if($row['c_id'])
     {
         $_SESSION['c_id']=$row['c_id'];
+        $_SESSION['first_name']=$row['first_name'];
+        $_SESSION['last_name']=$row['last_name'];
 
 
         header("location:manage_citizen2.php");
@@ -26,7 +28,7 @@ if(isset($_POST['submit']))
     }
 
 }
-
+//print_r($_SESSION);die;
 ?>
 <!DOCTYPE html>
 <html lang="en">

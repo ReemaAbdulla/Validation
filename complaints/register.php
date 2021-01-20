@@ -1,95 +1,86 @@
 <?php
 include("includes/connection.php");
 
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
 
 $n_idErr=$nationalityErr=$first_nameErr=$sec_nameErr=$third_nameErr=$last_nameErr=$cityErr=$addressErr=$mobile_numberErr=$genderErr=$passwordErr="";
-//$n_id=$nationality=$first_name=$sec_name=$third_name=$last_name=$city=$address=$mobile_number=$gender=$password=""
+$n_id=$nationality=$first_name=$sec_name=$third_name=$last_name=$city=$address=$mobile_number=$gender=$password="";
+$errors=[];
+
 if (isset($_POST['submit']))
 {
 
-    /*if (empty($_POST["n_id"])) 
-    {
-        $n_idErr = "National Number is required";
+    $n_id         =$_POST['n_id'] ?? null;
+    $nationality  =$_POST['nationality'] ?? null;
+    $first_name   =$_POST['first_name'] ?? null;
+    $sec_name     =$_POST['sec_name'] ?? null;
+    $third_name   =$_POST['third_name'] ?? null;
+    $last_name    =$_POST['last_name'] ?? null;
+    $city         =$_POST['city'] ?? null;
+    $address      =$_POST['address'] ?? null;
+    $mobile_number=$_POST['mobile_number'] ?? null;
+    $gender       =$_POST['gender'] ?? null;
+    $password     =$_POST['password'] ?? null;
 
-    } 
-    else {
-            $n_id =$_POST["n_id"];
-        }*/
 //first name validation
-        if (empty($_POST["first_name"])) 
-        {
-            $first_nameErr = "First name is required ";
-            echo $first_nameErr;
-
-
-        } 
-        else {
-            if (!preg_match('/^[a-zA-Z\s]+$/',$_POST['first_name']))
-            { 
-                echo " The first name contains charachter and spaces only";
-            }
-            else
-
-            {  
-                $first_name =$_POST["first_name"];
-            }
-
+    if (isset($first_name) && empty($first_name)) 
+    {
+        $errors['first_name'] = "First name is required ";
+    } 
+    else {
+        if (!preg_match('/^[a-zA-Z\s]+$/',$first_name))
+        { 
+            $errors['first_name'] =  " The first name contains charachter and spaces only";
         }
+        
+    }
 // second name validation
-        if (empty($_POST["sec_name"])) 
-        {
-            $sec_nameErr = "Sec name is required ";
-            echo $sec_nameErr;
-
-        } 
-        else {
-            if (!preg_match('/^[a-zA-Z\s]+$/',$_POST['sec_name']))
-            { 
-                echo " The name contains charachter and spaces only";
-            }
-            else
-
-            { 
-             $first_name =$_POST["sec_name"];
-         }
-     }
-//third name validation
-     if (empty($_POST["third_name"])) 
-     {
-        $third_nameErr = "Third name is required ";
-        echo $third_nameErr;
+    if (empty($_POST["sec_name"])) 
+    {
+        $errors['sec_name'] = "Sec name is required ";
+        
 
     } 
     else {
-        if (!preg_match('/^[a-zA-Z\s]+$/',$_POST['third_name']))
-        {
-           echo " The name contains charachter and spaces only";
-       }
-       else
+        if (!preg_match('/^[a-zA-Z\s]+$/',$_POST['sec_name']))
+        { 
+            $errors['sec_name'] = " The name contains charachter and spaces only";
+        }
+        else
 
-       { 
-
-         $third_name =$_POST["third_name"];
+        { 
+         $first_name =$_POST["sec_name"];
      }
-
  }
-//validation of last name
- if (empty($_POST["last_name"])) 
+//third name validation
+ if (empty($_POST["third_name"])) 
  {
-    $last_nameErr = "last name is required ";
-    echo $first_nameErr;
+    $errors['third_name'] = "Third name is required ";
+
+} 
+else {
+    if (!preg_match('/^[a-zA-Z\s]+$/',$_POST['third_name']))
+    {
+       $errors['third_name'] =  " The name contains charachter and spaces only";
+   }
+   else
+
+   { 
+
+     $third_name =$_POST["third_name"];
+ }
+
+}
+//validation of last name
+if (empty($_POST["last_name"])) 
+{
+    $errors['last_name'] = "last name is required ";
+
 
 } 
 else {
     if (!preg_match('/^[a-zA-Z\s]+$/',$_POST['last_name']))
     { 
-        echo " The name contains charachter and spaces only";
+        $errors['last_name'] = " The name contains charachter and spaces only";
     }
     else
 
@@ -102,8 +93,8 @@ else {
 //validation of city
 if (empty($_POST["city"])) 
 {
-    $first_nameErr = "You have to choose a city ";
-    echo $cityErr;
+    $errors['city'] = "You have to choose a city ";
+  //  echo $cityErr;
 
 } 
 else 
@@ -121,7 +112,7 @@ else
 }*/
 if (!is_numeric($_POST['mobile_number']))
 {
-    echo "The mobile number must be numbers only ";
+    $errors['mobile_number'] = "The mobile number must be numbers only ";
 
 }
 else
@@ -129,15 +120,15 @@ else
     $x=strlen($_POST['mobile_number']);
 
 
-if (!($x==10))
-{
-    echo "the mobile number must be 10 digits only";
-}
-else
-{
-    
-    $mobile_number=$_POST['$mobile_number'];
-}
+    if (!($x==10))
+    {
+        $errors['mobile_number'] = "the mobile number must be 10 digits only";
+    }
+    else
+    {
+
+        $mobile_number=$_POST['mobile_number'];
+    }
 }
 
 
@@ -162,41 +153,60 @@ else {$password=$_POST['password'];}*/
 
 
 
-  /* if (preg_match('/^(?=.*[a-zA-Z])(?=.*[0-9]).{8}$/',$_POST['password']))
-   {
-        
-        $password =$_POST["password"];
-    }
-    else
-
-    {
-        
-        echo " It must be at least 8 character uot to 32 and at least one upper case and one digit";
-
-    }*/
 
 
 
+//    if (preg_match('/^(?=.*[a-zA-Z])(?=.*[0-9]).{8}$/',$_POST['password']))
+//    {
+
+//         $password =$_POST["password"];
+//     }
+//     else
+
+//     {
+
+//         echo " It must be at least 8 character uot to 32 and at least one upper case and one digit";
+// die;
+//     }
+$pass = $_POST['password'];
+if (strlen($pass) < 8 || strlen($pass) > 32) {
+    $errors['password'] = "Password should be min 8 characters and max 16 characters";
+}
+if (!preg_match("/\d/", $pass)) {
+    $errors['password'] = "Password should contain at least one digit";
+}
+if (!preg_match("/[A-Z]/", $pass)) {
+    $errors['password'] = "Password should contain at least one Capital Letter";
+}
+if (!preg_match("/[a-z]/", $pass)) {
+    $errors['password'] = "Password should contain at least one small Letter";
+}
+if (!preg_match("/\W/", $pass)) {
+    $errors['password'] = "Password should contain at least one special character";
+}
+if (preg_match("/\s/", $pass)) {
+    $errors['password'] = "Password should not contain any white space";
+}
 
 
 
-    $n_id         =$_POST['n_id'];
-    $nationality  =$_POST['nationality'];
-    $first_name   =$_POST['first_name'];
-    $sec_name     =$_POST['sec_name'];
-    $third_name   =$_POST['third_name'];
-    $last_name    =$_POST['last_name'];
-    $city         =$_POST['city'];
-    $address      =$_POST['address'];
-    $mobile_number=$_POST['mobile_number'];
-    $gender       =$_POST['gender'];
-    $password     =$_POST['password'];
+if(empty($errors))
+{
 
-    $query="insert into citizen(n_id,nationality,first_name,sec_name,third_name,last_name,city,address,mobile_number,gender,password) values('$n_id','$nationality','$first_name','$sec_name','$third_name','$last_name','$city','$address','$mobile_number','$gender','$password')";
-    //echo $query;die;
-    mysqli_query($conn,$query);
+
+ $query="insert into citizen(n_id,nationality,first_name,sec_name,third_name,last_name,city,address,mobile_number,gender,password) values('$n_id','$nationality','$first_name','$sec_name','$third_name','$last_name','$city','$address','$mobile_number','$gender','$password')";
+   // echo $query;die;
+
+mysqli_query($conn,$query);
+
+ header('Location: http://localhost/complaints/login2.php');
+
 
 }
+
+
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -234,20 +244,45 @@ else {$password=$_POST['password'];}*/
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
 
+    <!-- Jquery JS-->
+    <script src="vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="vendor/slick/slick.min.js">
+    </script>
+    <script src="vendor/wow/wow.min.js"></script>
+    <script src="vendor/animsition/animsition.min.js"></script>
+    <script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="vendor/select2/select2.min.js">
+    </script>
+
+    <!-- Main JS-->
+    <script src="js/main.js"></script>
+
+
 </head>
 
-<body class="animsition">
-
+<body class="animation">
     <div class="page-wrapper">
         <div class="page-content--bge5">
-            <!--<div class="container">-->
+            <div class="container">
                 <div class="login-wrap">
-                    <div class="login-content" style="margin:5px">
+                    <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
                                 <img src="images/complaints3.jpg" alt="Cmplaints and Thankfull"  style="width:50%;height:50% ">
                             </a>
                         </div>
+
                         <div class="login-form">
                             <form action="" method="post">
 
@@ -259,11 +294,6 @@ else {$password=$_POST['password'];}*/
                                             <label>National ID</label>
                                             <input class="au-input au-input--full" type="text" name="n_id" required=""> 
                                         </div>
-
-
-
-
-
                                         <div class="col-md-6">
 
                                             <label>Nationality</label>
@@ -271,16 +301,12 @@ else {$password=$_POST['password'];}*/
                                                 <option value="Jordanian">Jordanian</option>
                                                 <option value="Others">Others</option>
 
-
                                             </select>
 
                                         </div>
 
 
                                     </div>
-
-                                    
-
 
 
 
@@ -293,13 +319,19 @@ else {$password=$_POST['password'];}*/
 
                                         <div class="col-md-6">
                                             <label>First Name </label>
-                                            <input class="au-input au-input--full" type="text" name="first_name"  value="" >
+                                            <input 
+                                            class="au-input au-input--full" 
+                                            type="text" 
+                                            name="first_name"  
+                                            value="<?= $first_name ?>" >
+                                            <?= (isset($errors['first_name']) && !empty($errors['first_name']))? "<label class='text-danger'> $errors[first_name] </label>": "" ?>
                                         </div>
 
 
                                         <div class="col-md-6">
                                            <label>Second Name</label>
-                                           <input class="au-input au-input--full" type="text" name="sec_name"  required="">
+                                           <input class="au-input au-input--full" type="text" name="sec_name"  required="" value="<?= $sec_name ?>" >
+                                           <?= (isset($errors['sec_name']) && !empty($errors['sec_name']))? "<label class='text-danger'> $errors[sec_name] </label>": "" ?>
                                        </div>
 
                                    </div>
@@ -311,64 +343,76 @@ else {$password=$_POST['password'];}*/
 
                                     <div class="col-md-6">
                                         <label>Middle Name </label>
-                                        <input class="au-input au-input--full" type="text" name="third_name"  required="">
+                                        <input class="au-input au-input--full" type="text" name="third_name"  required="" value="<?= $third_name ?>" >
+                                        <?= (isset($errors['third_name']) && !empty($errors['third_name']))? "<label class='text-danger'> $errors[third_name] </label>": "" ?>
                                     </div>
 
                                     <div class="col-md-6">
                                        <label>Last Name</label>
-                                       <input class="au-input au-input--full" type="text" name="last_name"  required="">
+                                       <input 
+                                        class="au-input au-input--full" 
+                                        type="text" 
+                                        name="last_name"  
+                                        required="" 
+                                        value="<?= $last_name ?>" 
+                                        >
+
+                                       <?= (isset($errors['last_name']) && !empty($errors['last_name']))? "<label class='text-danger'> $errors[last_name] </label>": "" ?>
                                    </div>
+                               </div>
 
                                </div>
-                           </div>
 
 
-                           <div class="form-group">
 
-                               <div class="row">
+                               <div class="form-group">
 
-                                <div class="col-md-6">
+                                   <div class="row">
 
-                                    <label>Mobile Number</label>
-                                    <input class="au-input au-input--full" type="text" name="mobile_number" required="" >
+                                    <div class="col-md-6">
 
-                                </div>
+                                        <label>Mobile Number</label>
+                                        <input class="au-input au-input--full" type="text" name="mobile_number" required="" >
 
-                                <div class="col-md-6">
-                                    <label>Password</label>
-                                    <input class="au-input au-input--full" type="password" name="password" required="">
-                                </div>
+                                    </div>
 
-                            </div>
-
-                            <div class="form-group">
-
-                               <div class="row">
-
-                                <div class="col-md-6">
-
-                                    <label>City</label>
-                                    <select name="city" id="city" class="input-lg form-control-lg form-control" style="font-size:15px" required="">
-                                        <option value="amman">Amman</option>
-                                        <option value="zarqa">Zarqa</option>
-                                        <option value="irbid">Irbid</option>
-                                        <option value="mafraq">Mafraq </option>
-                                        <option value="ramtha">Ramtha </option>
-                                        <option value="shona_shamalieh">AL shona shamalieh</option>
-                                        <option value="shona_janobieh">AL shona janobieh</option>
-                                        <option value="maan"> Maan </option>
-                                        <option value="karak">Al-karak </option>
-
-                                    </select>
+                                    <div class="col-md-6">
+                                        <label>Password</label>
+                                        <input class="au-input au-input--full" type="password" name="password" required="">
+                                        <?= (isset($errors['password']) && !empty($errors['password']))? "<label class='text-danger'> $errors[password] </label>": "" ?>
+                                    </div>
 
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label>Address</label>
-                                    <input class="au-input au-input--full" type="text" name="address" >
-                                </div>
+                                <div class="form-group">
 
-                            </div>
+                                   <div class="row">
+
+                                    <div class="col-md-6">
+
+                                        <label>City</label>
+                                        <select name="city" id="city" class="input-lg form-control-lg form-control" style="font-size:15px" required="">
+                                            <option value="amman">Amman</option>
+                                            <option value="zarqa">Zarqa</option>
+                                            <option value="irbid">Irbid</option>
+                                            <option value="mafraq">Mafraq </option>
+                                            <option value="ramtha">Ramtha </option>
+                                            <option value="shona_shamalieh">AL shona shamalieh</option>
+                                            <option value="shona_janobieh">AL shona janobieh</option>
+                                            <option value="maan"> Maan </option>
+                                            <option value="karak">Al-karak </option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label>Address</label>
+                                        <input class="au-input au-input--full" type="text" name="address"  value="<?= $address?>" >
+                                        <?= (isset($errors['address']) && !empty($errors['addreaa']))? "<label class='text-danger'> $errors[address] </label>": "" ?>>
+                                    </div>
+
+                                </div>
 
 
                    <!-- <div class="row form-group">
@@ -428,34 +472,9 @@ else {$password=$_POST['password'];}*/
          </div>
      </div>
  </div>
+
  <!-- </div>-->
 </div>
-
-</div>
-
-<!-- Jquery JS-->
-<script src="vendor/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap JS-->
-<script src="vendor/bootstrap-4.1/popper.min.js"></script>
-<script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
-<!-- Vendor JS       -->
-<script src="vendor/slick/slick.min.js">
-</script>
-<script src="vendor/wow/wow.min.js"></script>
-<script src="vendor/animsition/animsition.min.js"></script>
-<script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-</script>
-<script src="vendor/counter-up/jquery.waypoints.min.js"></script>
-<script src="vendor/counter-up/jquery.counterup.min.js">
-</script>
-<script src="vendor/circle-progress/circle-progress.min.js"></script>
-<script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-<script src="vendor/chartjs/Chart.bundle.min.js"></script>
-<script src="vendor/select2/select2.min.js">
-</script>
-
-<!-- Main JS-->
-<script src="js/main.js"></script>
 
 </body>
 

@@ -38,6 +38,14 @@ header("location:manage_cases.php");
 $query="select * from cases where case_id={$_GET['id']}";
 $result=mysqli_query($conn,$query);
 $row=mysqli_fetch_assoc($result);
+
+
+
+$admin_type= [
+    "super" => "super",
+    "normal" => "normal",
+            ];
+
 ?>
 
 

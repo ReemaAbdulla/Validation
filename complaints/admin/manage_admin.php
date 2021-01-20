@@ -1,6 +1,11 @@
 <?php 
 //To call connection for the page by using include function
 include("includes/connection.php");
+
+
+
+    
+
 //we will make CRUD
 //Lets start with Create
 
@@ -10,10 +15,11 @@ if (isset($_POST['submit']))
      $admin_password=$_POST['admin_password'];
      $admin_fullname=$_POST['admin_fullname'];
      $admin_dept    =$_POST['admin_dept'];
+     $admin_type    =$_POST['admin_type'];
  
 
- $query="insert into admin(admin_email,admin_password,admin_fullname,admin_dept)
-         values('$admin_email','$admin_password','$admin_fullname','$admin_dept')";
+ $query="insert into admin(admin_email,admin_password,admin_fullname,admin_dept,admin_type)
+         values('$admin_email','$admin_password','$admin_fullname','$admin_dept','$admin_type')";
          
         mysqli_query($conn,$query);
       
@@ -52,9 +58,37 @@ if (isset($_POST['submit']))
                                                 <input  name="admin_fullname" type="text" class="form-control">
                                             </div>
                                             <div class="form-group">
-                                                <label for="admin_dept" class="control-label mb-1">Admin Department</label>
-                                                <input  name="admin_dept" type="txt" class="form-control">
-                                            </div>
+                                                        <label >Admin Type</label>
+                                                      <select name="admin_dept" id="admin_dept" class="form-control">
+                                                    
+                                              
+                                                        <option value="Directorate of Administrative Affairs">Directorate of Administrative Affairs</option>
+                                                        <option value="Directorate of Administrative Affairs>Directorate of Financial Affairs">Directorate of Administrative Affairs>Directorate of Financial Affairs</option>
+                                                        <option value="Legal Affairs Directorate">Legal Affairs Directorate</option>
+                                                        <option value="Central Employment Directorate">Central Employment Directorate </option>
+                                                        <option value="Central Labor Inspection Directorate">Central Labor Inspection Directorate </option>
+                                                        <option value="Expatriate Employment Directorate">Expatriate Employment Directorate</option>
+                                                        <option value="Directorate of International Cooperation">Directorate of International Cooperation</option>
+                                                        <option value="Directorate of Women's Labor">Directorate of Women's Labor </option>
+                                                        <option value="Media and Communication  and Public Relations Unit">Media and Communication  and Public Relations Unit </option>
+                                                        <option value="Directorate of Information Technology and Electronic Transformation">Directorate of Information Technology and Electronic Transformation </option>
+                                                        <option value="Unit management of productive branches">Unit management of productive branches </option>
+                                                        <option value="Directorate of Occupational Safety and Health">Directorate of Occupational Safety and Health </option>
+                                                        <option value="Coordination and Follow-up Unit">Coordination and Follow-up Unit </option>
+                                                        <option value="Directorate of Occupational Work Regulation">Directorate of Occupational Work Regulation </option>
+
+                                                    </select>  
+                                               
+                                                  </div>
+
+                                            <div class="form-group">
+                                                        <label >Admin Type</label>
+                                                      <select name="admin_type" id="admin_type" class="form-control">
+                                                        <option value="super">Super</option>
+                                                        <option value="normal">Normal</option>
+                                                    </select>  
+                                               
+                                                  </div>
 
                                             
                                              
@@ -97,6 +131,7 @@ if (isset($_POST['submit']))
                                                 <th>Email</th>
                                                 <th>FullName</th>
                                                 <th>Department</th>
+                                                <th>Admin Type</th>
                                                 <th>Edit</th>
                                                 <th>Delete</th>
                                             </tr>
@@ -112,6 +147,7 @@ if (isset($_POST['submit']))
                                                 echo "<td>{$row['admin_email']}</td>";
                                                 echo "<td>{$row['admin_fullname']}</td>";
                                                 echo "<td>{$row['admin_dept']}</td>";
+                                                echo "<td>{$row['admin_type']}</td>";
 
                                                 echo "<td><a href='edit_admin.php?id={$row['admin_id']}'>Edit</a></td>";
                                                 echo "<td><a href='delete_admin.php?id={$row['admin_id']}'>Delete</a></td>";

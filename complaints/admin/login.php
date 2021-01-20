@@ -6,6 +6,7 @@ if(isset($_POST['submit']))
 {
     $admin_email=$_POST['admin_email'];
     $admin_password=$_POST['admin_password'];
+    
     $query="select * from admin where admin_email='$admin_email' AND admin_password='$admin_password'";
     $result=mysqli_query($conn,$query);
     $row=mysqli_fetch_assoc($result);
@@ -13,7 +14,21 @@ if(isset($_POST['submit']))
     if($row['admin_id'])
     {
         $_SESSION['admin_id']=$row['admin_id'];
-        header("location:manage_admin.php");
+        $_SESSION['admin_type']=$row['admin_type'];
+        $_SESSION['admin_fullName']=$row['admin_fullname'];
+        $_SESSION['admin_dept']=$row['admin_dept'];
+
+
+
+    if($row['admin_type']=="super")
+        {
+          header("location:manage_admin.php");
+        }
+        else
+        {
+          header("location:manage_cases.php");
+        }
+        
     }
     else
     {

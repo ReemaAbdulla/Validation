@@ -1,6 +1,13 @@
 <?php 
 // connect to Data Base
 include("includes/connection.php");
+session_start();
+//$admin_dept = $_SESSION['admin_dept'];
+                                           // echo $admin_dept;die;
+
+//print_r($_SESSION);die;
+    
+ //echo $x=$_SESSION['admin_dept'];die;
 
 if (isset($_POST['submit']))
 {
@@ -15,14 +22,16 @@ if (isset($_POST['submit']))
     $case_entry    =$_POST['case_entry'];
     $case_desc     =$_POST['case_desc'];
     $case_emp_note =$_POST['case_emp_note'];
+    
+    $admin_id      =$_SESSION['admin_id'];
 
-    $query="insert into  cases(case_day,case_date,case_time,case_type,directory_name,case_priority,case_status,case_entry,case_desc,case_emp_note)
-                         values('$case_day','$case_date','$case_time','$case_type','$directory_name','$case_priority','$case_status','$case_entry','$case_desc','$case_emp_note')";
-
+    $query="insert into  cases(admin_id,case_day,case_date,case_time,case_type,directory_name,case_priority,case_status,case_entry,case_desc,case_emp_note)
+                         values('$admin_id',
+                         '$case_day','$case_date','$case_time','$case_type','$directory_name','$case_priority','$case_status','$case_entry','$case_desc','$case_emp_note')";
+//echo $query; die;
 
     mysqli_query($conn,$query);
-    //echo $query;
-     // die;
+    
          
    }
 ?>
@@ -206,9 +215,13 @@ if (isset($_POST['submit']))
                                         </thead>
                                         <tbody>
                                             <?php
+                                                                                    
                                               $query="select * from cases";
                                               $result=mysqli_query($conn,$query);
+                                              
                                               while($row=mysqli_fetch_assoc($result))
+                                              {
+                                                if ($row['directory_name'] == $_SESSION['admin_dept'])
                                               {
                                                 echo "<tr>";
                                                 echo "<td>{$row['case_id']}</td>";
@@ -225,7 +238,7 @@ if (isset($_POST['submit']))
                                                 echo "<td><a href='edit_case.php?id={$row['case_id']}'>Edit</a></td>";
                                                 echo "<td><a href='delete_case.php?id={$row['case_id']}'>Delete</a></td>";
                                                 echo "</tr>";
-
+                                            }
 
                                               }
                                             ?>
